@@ -11,20 +11,25 @@ class UsersDAO {
 	public function get($username = null, $userID = null) {
 		$sql = "SELECT * ";
 		$sql .= "FROM users ";
-		if ($username != null && $userID === null)
+		if ($username != null && $userID == null) {
 			$sql .= "WHERE users.username=? ";
-		if ($userID != null && $username === null)
+		}
+		if ($userID != null && $username === null) {
 			$sql .= "WHERE users.id=? ";
+		}
 		$sql .= "ORDER BY users.username ";
-		
 		$stmt = $this->dbManager->prepareQuery ( $sql );
-		$this->dbManager->bindValue ( $stmt, 1, $userID, $this->dbManager->INT_TYPE );
+		if ($username != null && $userID == null) {
+			$this->dbManager->bindValue ( $stmt, 1, $username, $this->dbManager->STRING_TYPE );
+		}
+		else{
+			$this->dbManager->bindValue ( $stmt, 1, $userID, $this->dbManager->INT_TYPE );
+		}
 		$this->dbManager->executeQuery ( $stmt );
 		$rows = $this->dbManager->fetchResults ( $stmt );
 		
 		return ($rows);
 	}
-	
 	public function insert($parametersArray) {
 		// insertion assumes that all the required parameters are defined and set
 		$sql = "INSERT INTO users (name, surname, email, password) ";
@@ -52,8 +57,8 @@ class UsersDAO {
 		$this->dbManager->bindValue ( $stmt, 5, $userID, PDO::PARAM_INT );
 		$this->dbManager->executeQuery ( $stmt );
 		
-		//check for number of affected rows
-		$rowCount = $this->dbManager->getNumberOfAffectedRows($stmt);
+		// check for number of affected rows
+		$rowCount = $this->dbManager->getNumberOfAffectedRows ( $stmt );
 		return ($rowCount);
 	}
 	public function delete($userID) {

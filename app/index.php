@@ -14,9 +14,11 @@ function authenticate(\Slim\Route $route){
 	$username =  $headers['username'];
 	$password =  $headers['password'];
 	$parameters = array("username"=>$username, "password"=>$password);
-	//echo "Header Username: " . $username . "Header Password: " .  $password;
 	$result = new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", ACTION_AUTHENTICATE_USER, $app, $parameters );
-	//get the auth stream to return true here, access the result.model.api response; either true or false.
+	$auth = $result->model->apiResponse;
+	if ($auth != true){
+		$app->halt(401);
+	}
 	return true;
 }
 

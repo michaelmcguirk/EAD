@@ -24,19 +24,17 @@ class UserModel {
 	}
 	
 	public function authenticateUser($userParams) {
-		$username = $userParams['username'];
-		$password = $userParams['password'];
-		$user = $this->UsersDAO->get (null, $username);
-		return $user;
-		/*
-		if($user != null && $user["username"] === $username && $user["password"] === $password){
+		$username = $userParams["username"];
+		$password = $userParams["password"];
+		$user = $this->UsersDAO->get ($username, null);
+		//return $user;
+		
+		if(!empty($user) && $user[0]['username'] === $username && $user[0]["password"] === $password){
 			return true;
-			echo "Auth Success";
 		}
 		else{
 			return false;
-			echo "Auth Failure";
-		}*/
+		}
 	}
 	/**
 	 *
