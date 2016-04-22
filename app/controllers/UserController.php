@@ -73,11 +73,11 @@ class UserController {
 	}
 	
 	private function authenticateUser($userParams) {
-		$auth = $this->model->getUser ( $userParams );
+		$auth = $this->model->authenticateUser ( $userParams );
 		if ($auth === true) {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_OK );
 			$this->model->apiResponse = $auth;
-			return true;
+			//return true;
 		} else {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_UNAUTHORIZED );
 			$Message = array (

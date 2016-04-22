@@ -26,7 +26,7 @@ class UserModel {
 	public function authenticateUser($userParams) {
 		$username = $userParams['username'];
 		$password = $userParams['password'];
-		$user = $this->UsersDAO->get ( $username ) != null;
+		$user = $this->UsersDAO->get (null, $username);
 		return $user;
 		/*
 		if($user != null && $user["username"] === $username && $user["password"] === $password){
