@@ -48,7 +48,7 @@ class ArtistDAO {
 		$stmt = $this->dbManager->prepareQuery ( $sql );
 		$this->dbManager->bindValue ( $stmt, 1, $parametersArray ["name"], PDO::PARAM_STR );
 		$this->dbManager->bindValue ( $stmt, 2, $parametersArray ["country"], PDO::PARAM_STR );
-		$this->dbManager->bindValue ( $stmt, 5, $artistID, PDO::PARAM_INT );
+		$this->dbManager->bindValue ( $stmt, 3, $artistID, PDO::PARAM_INT );
 		$this->dbManager->executeQuery ( $stmt );
 		
 		//check for number of affected rows

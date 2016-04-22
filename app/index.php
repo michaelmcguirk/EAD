@@ -58,28 +58,28 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 	$action = null;
 	$parameters ["id"] = $artistID; // prepare parameters to be passed to the controller (example: ID)
 
-	if (($userID == null) or is_numeric ( $userID )) {
+	if (($artistID == null) or is_numeric ( $artistID )) {
 		switch ($httpMethod) {
 			case "GET" :
-				if ($userID != null)
-					$action = ACTION_GET_USER;
+				if ($artistID != null)
+					$action = ACTION_GET_ARTIST;
 					else
-						$action = ACTION_GET_USERS;
+						$action = ACTION_GET_ARTISTS;
 						break;
 			case "POST" :
-				$action = ACTION_CREATE_USER;
+				$action = ACTION_CREATE_ARTIST;
 				break;
 			case "PUT" :
-				$action = ACTION_UPDATE_USER;
+				$action = ACTION_UPDATE_ARTIST;
 				break;
 			case "DELETE" :
-				$action = ACTION_DELETE_USER;
+				$action = ACTION_DELETE_ARTIST;
 				break;
 			default :
 		}
 	}
 	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
-	$run = new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", "jsonView", $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
