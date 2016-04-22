@@ -47,22 +47,22 @@ class UserModel {
 	}
 	public function deleteArtist($artistID) {
 		if (is_numeric ( $artistID )) {
-			$deletedRows = $this->UsersDAO->delete ( $userID );
+			$deletedRows = $this->ArtistDAO->delete ( $artistID );
 			
 			if ($deletedRows > 0)
 				return (true);
 		}
 		return (false);
 	}
-	public function updateUser($userID, $userNewRepresentation) {
-		if (! empty ( $userID ) && is_numeric ( $userID )) {
+	public function updateArtist($artistID, $artistData) {
+		if (! empty ( $artistID ) && is_numeric ( $artistID )) {
 			// compulsory values
-			if (! empty ( $userNewRepresentation ["name"] ) && ! empty ( $userNewRepresentation ["surname"] ) && ! empty ( $userNewRepresentation ["email"] ) && ! empty ( $userNewRepresentation ["password"] )) {
+			if (! empty ( $artistData ["name"] ) && ! empty ( $artistData ["surname"] ) && ! empty ( $artistData ["email"] ) && ! empty ( $artistData ["password"] )) {
 				/*
 				 * the model knows the representation of a user in the database and this is: name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
 				 */
-				if (($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["name"], TABLE_USER_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["surname"], TABLE_USER_SURNAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["email"], TABLE_USER_EMAIL_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
-					$updatedRows = $this->UsersDAO->update ( $userNewRepresentation, $userID );
+				if (($this->validationSuite->isLengthStringValid ( $artistData ["name"], TABLE_USER_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["surname"], TABLE_USER_SURNAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["email"], TABLE_USER_EMAIL_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
+					$updatedRows = $this->UsersDAO->update ( $artistData, $userID );
 					if ($updatedRows > 0)
 						return (true);
 				}
