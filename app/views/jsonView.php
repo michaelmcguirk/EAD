@@ -1,4 +1,5 @@
 <?php
+// a comment
 class jsonView {
 	private $model, $controller, $slimApp;
 	public function __construct($controller, $model, $slimApp) {
