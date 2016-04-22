@@ -57,12 +57,12 @@ class UserModel {
 	public function updateArtist($artistID, $artistData) {
 		if (! empty ( $artistID ) && is_numeric ( $artistID )) {
 			// compulsory values
-			if (! empty ( $artistData ["name"] ) && ! empty ( $artistData ["surname"] ) && ! empty ( $artistData ["email"] ) && ! empty ( $artistData ["password"] )) {
+			if (! empty ( $artistData ["name"] ) && ! empty ( $artistData ["country"] )) {
 				/*
 				 * the model knows the representation of a user in the database and this is: name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
 				 */
-				if (($this->validationSuite->isLengthStringValid ( $artistData ["name"], TABLE_USER_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["surname"], TABLE_USER_SURNAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["email"], TABLE_USER_EMAIL_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
-					$updatedRows = $this->UsersDAO->update ( $artistData, $userID );
+				if (($this->validationSuite->isLengthStringValid ( $artistData ["name"], TABLE_ARTIST_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $artistData ["country"], TABLE_ARTIST_COUNTRY_LENGTH ))) {
+					$updatedRows = $this->ArtistDAO->update ( $artistData, $artistID );
 					if ($updatedRows > 0)
 						return (true);
 				}
@@ -71,7 +71,7 @@ class UserModel {
 		return (false);
 	}
 	public function __destruct() {
-		$this->UsersDAO = null;
+		$this->ArtistDAO = null;
 		$this->dbmanager->closeConnection ();
 	}
 }
