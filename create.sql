@@ -24,7 +24,7 @@ CREATE TABLE Album
 (
 ID int NOT NULL AUTO_INCREMENT,
 album_name varchar(255) NOT NULL,
-album_year YEAR(4),
+album_year int,
 artist int NOT NULL,
 PRIMARY KEY (ID),
 FOREIGN KEY (artist) REFERENCES Artist(id)
