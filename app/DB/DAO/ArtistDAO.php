@@ -8,26 +8,42 @@ class ArtistDAO {
 	function ArtistDAO($DBMngr) {
 		$this->dbManager = $DBMngr;
 	}
-	public function get($artistName = null, $artistID = null) {
+	/*
+	 * public function get($artistName = null, $artistID = null) {
+	 * $sql = "SELECT * ";
+	 * $sql .= "FROM artist ";
+	 * if ($artistName != null && $artistID === null)
+	 * $sql .= "WHERE artist.name=? ";
+	 * if ($artistID != null && $artistName === null)
+	 * $sql .= "WHERE artist.id=? ";
+	 * $sql .= "ORDER BY artist.name ";
+	 *
+	 * $stmt = $this->dbManager->prepareQuery ( $sql );
+	 * if ($artistName != null && $artistID === null)
+	 * $this->dbManager->bindValue ( $stmt, 1, $artistName, $this->dbManager->INT_TYPE );
+	 * if ($artistID != null && $artistName === null)
+	 * $this->dbManager->bindValue ( $stmt, 1, $artistID, $this->dbManager->INT_TYPE );
+	 * $this->dbManager->executeQuery ( $stmt );
+	 * $rows = $this->dbManager->fetchResults ( $stmt );
+	 *
+	 * return ($rows);
+	 * }
+	 */
+	public function get($artistID = null) {
 		$sql = "SELECT * ";
 		$sql .= "FROM artist ";
-		if ($artistName != null && $artistID === null)
-			$sql .= "WHERE artist.name=? ";
-		if ($artistID != null && $artistName === null)
+		if ($artistID != null)
 			$sql .= "WHERE artist.id=? ";
 		$sql .= "ORDER BY artist.name ";
 		
 		$stmt = $this->dbManager->prepareQuery ( $sql );
-		if ($artistName != null && $artistID === null)
-			$this->dbManager->bindValue ( $stmt, 1, $artistName, $this->dbManager->INT_TYPE );
-		if ($artistID != null && $artistName === null)
+		if ($artistID != null)
 			$this->dbManager->bindValue ( $stmt, 1, $artistID, $this->dbManager->INT_TYPE );
 		$this->dbManager->executeQuery ( $stmt );
 		$rows = $this->dbManager->fetchResults ( $stmt );
 		
 		return ($rows);
 	}
-	
 	public function insert($parametersArray) {
 		// insertion assumes that all the required parameters are defined and set
 		$sql = "INSERT INTO artist (name, country) ";
@@ -51,8 +67,8 @@ class ArtistDAO {
 		$this->dbManager->bindValue ( $stmt, 3, $artistID, PDO::PARAM_INT );
 		$this->dbManager->executeQuery ( $stmt );
 		
-		//check for number of affected rows
-		$rowCount = $this->dbManager->getNumberOfAffectedRows($stmt);
+		// check for number of affected rows
+		$rowCount = $this->dbManager->getNumberOfAffectedRows ( $stmt );
 		return ($rowCount);
 	}
 	public function delete($artistID) {

@@ -2,7 +2,7 @@
 require_once "DB/pdoDbManager.php";
 require_once "DB/DAO/ArtistDAO.php";
 require_once "Validation.php";
-class UserModel {
+class ArtistModel {
 	private $ArtistDAO; // list of DAOs used by this model
 	private $dbmanager; // dbmanager
 	public $apiResponse; // api response
@@ -13,11 +13,13 @@ class UserModel {
 		$this->dbmanager->openConnection ();
 		$this->validationSuite = new Validation ();
 	}
-	public function getArtist() {
-		return ($this->UsersDAO->get ());
+	public function getArtists() {
+		return ($this->ArtistDAO->get ());
 	}
-	public function getArtist($artistName) {
-		return ($this->ArtistDAO->get ($artistName, null ));
+	public function getArtist($artistID) {
+		if (is_numeric ( $artistID ))
+			return ($this->ArtistDAO->get ($artistID));
+		return false;
 	}
 	
 	public function createNewArtist($newArtist) {

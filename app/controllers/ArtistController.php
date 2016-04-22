@@ -17,7 +17,7 @@ class ArtistController {
 				$this->getArtist ( $artistID );
 				break;
 			case ACTION_GET_ARTISTS :
-				$this->getArtist ();
+				$this->getArtists ();
 				break;
 			case ACTION_UPDATE_ARTIST :
 				$this->updateArtist ( $artistID, $this->requestBody );
@@ -41,8 +41,8 @@ class ArtistController {
 				break;
 		}
 	}
-	private function getArtist() {
-		$answer = $this->model->getArtist ();
+	private function getArtists() {
+		$answer = $this->model->getArtists ();
 		if ($answer != null) {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_OK );
 			$this->model->apiResponse = $answer;
