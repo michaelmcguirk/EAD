@@ -32,19 +32,18 @@ class ArtistModel {
 			 */
 			
 			if (($this->validationSuite->isLengthStringValid ( $newArtist ["name"], TABLE_ARTIST_NAME_LENGTH ))) {
-				if ($newId = $this->UsersDAO->insert ( $newArtist ))
+				if ($newId = $this->ArtistDAO->insert ( $newArtist ))
 					return ($newId);
 			}
 		}
 		// if validation fails or insertion fails
 		return (false);
 	}
-	public function searchArtists($string) {
-		if (! empty ( $string )) {
-			$resultSet = $this->ArtistsDAO->search ( $string );
+	public function searchArtists($searchString) {
+		if (! empty ( $searchString )) {
+			$resultSet = $this->ArtistDAO->search ( $searchString );
 			return $resultSet;
 		}
-		
 		return false;
 	}
 	public function deleteArtist($artistID) {

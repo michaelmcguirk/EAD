@@ -86,6 +86,18 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
+// Artists
+$app->map ( "/artists/search/:str", "authenticate", function ($str = null) use($app) {
+
+	$httpMethod = $app->request->getMethod ();
+	$action = ACTION_SEARCH_ARTIST;
+	$parameters ["SearchStr"] = $str; // prepare parameters to be passed to the controller (example: ID)
+	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", "jsonView", $action, $app, $parameters );
+	return $run -> output();
+} )->via ( "GET", "POST", "PUT", "DELETE" );
+
+
 $app->run ();
 class loadRunMVCComponents {
 	public $model, $controller, $view;

@@ -29,8 +29,8 @@ class ArtistController {
 				$this->deleteArtist ( $artistID );
 				break;
 			case ACTION_SEARCH_ARTIST :
-				$string = $parameteres ["SearchingString"];
-				$this->searchArtists ( $string );
+				$searchString = $parameteres ["SearchStr"];
+				$this->searchArtists ( $searchString );
 				break;
 			case null :
 				$this->slimApp->response ()->setStatus ( HTTPSTATUS_BADREQUEST );
@@ -103,8 +103,8 @@ class ArtistController {
 			$this->model->apiResponse = $Message;
 		}
 	}
-	private function searchArtists($string) {
-		$answer = $this->model->searchArtists ( $string );
+	private function searchArtists($searchString) {
+		$answer = $this->model->searchArtists ( $searchString );
 		if ($answer != null) {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_OK );
 			$this->model->apiResponse = $answer;

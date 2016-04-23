@@ -86,7 +86,7 @@ class ArtistDAO {
 		$sql = "SELECT * ";
 		$sql .= "FROM artist ";
 		$sql .= "WHERE artist.name LIKE CONCAT('%', ?, '%') or artist.country LIKE CONCAT('%', ?, '%')  ";
-		$sql .= "ORDER BY users.name ";
+		$sql .= "ORDER BY artist.name ";
 		
 		$stmt = $this->dbManager->prepareQuery ( $sql );
 		$this->dbManager->bindValue ( $stmt, 1, $str, $this->dbManager->STRING_TYPE );
