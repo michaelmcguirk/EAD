@@ -70,7 +70,7 @@ class ArtistController {
 	}
 	
 	private function createNewArtist($newArtist) {
-		if ($newID = $this->model->createNewUser ( $newArtist )) {
+		if ($newID = $this->model->createNewArtist ( $newArtist )) {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_CREATED );
 			$Message = array (
 					GENERAL_MESSAGE_LABEL => GENERAL_RESOURCE_CREATED,
