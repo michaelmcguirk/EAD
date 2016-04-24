@@ -60,6 +60,17 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 	$httpMethod = $app->request->getMethod ();
 	$action = null;
 	$parameters ["id"] = $artistID; // prepare parameters to be passed to the controller (example: ID)
+	if (!empty($app->request()->get('format')))
+	{
+		$viewParam = $app->request()->get('format');
+		if($viewParam === "xml"){
+			$view = "xmlView";
+		}
+		else{
+			$view = "jsonView";
+		}		
+		echo $view;
+	}
 
 	if (($artistID == null) or is_numeric ( $artistID )) {
 		switch ($httpMethod) {
@@ -82,7 +93,7 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 		}
 	}
 	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
-	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
