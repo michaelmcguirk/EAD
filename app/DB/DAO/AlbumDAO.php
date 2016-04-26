@@ -11,7 +11,7 @@ class AlbumDAO {
 	public function get($albumName = null, $albumID = null) {
 		$sql = "SELECT * ";
 		$sql .= "FROM album ";
-		if ($artistName != null && $artistID === null)
+		if ($albumName != null && $albumID === null)
 			$sql .= "WHERE album.album_name=? ";
 			if ($albumID != null && $albumName === null)
 				$sql .= "WHERE album.id=? ";
@@ -36,12 +36,12 @@ class AlbumDAO {
 		$stmt = $this->dbManager->prepareQuery ( $sql );
 		$this->dbManager->bindValue ( $stmt, 1, $parametersArray ["album_name"], $this->dbManager->STRING_TYPE );
 		$this->dbManager->bindValue ( $stmt, 2, $parametersArray ["album_year"], $this->dbManager->STRING_TYPE );
-		$this->dbManager->bindValue ( $stmt, 2, $parametersArray ["artist"], $this->dbManager->STRING_TYPE );
+		$this->dbManager->bindValue ( $stmt, 3, $parametersArray ["artist"], $this->dbManager->STRING_TYPE );
 		$this->dbManager->executeQuery ( $stmt );
 
 		return ($this->dbManager->getLastInsertedID ());
 	}
-	public function update($parametersArray, $artistID) {
+	public function update($parametersArray, $albumID) {
 		// /create an UPDATE sql statement (reads the parametersArray - this contains the fields submitted in the HTML5 form)
 		$sql = "UPDATE album SET album_name = ?, album_year = ?, artist = ? WHERE id = ?";
 
@@ -50,7 +50,7 @@ class AlbumDAO {
 		$this->dbManager->bindValue ( $stmt, 1, $parametersArray ["album_name"], PDO::PARAM_STR );
 		$this->dbManager->bindValue ( $stmt, 2, $parametersArray ["album_year"], PDO::PARAM_STR );
 		$this->dbManager->bindValue ( $stmt, 3, $parametersArray ["artist"], PDO::PARAM_STR );
-		$this->dbManager->bindValue ( $stmt, 4, $artistID, PDO::PARAM_INT );
+		$this->dbManager->bindValue ( $stmt, 4, $albumID, PDO::PARAM_INT );
 		$this->dbManager->executeQuery ( $stmt );
 
 		//check for number of affected rows
@@ -62,7 +62,7 @@ class AlbumDAO {
 		$sql .= "WHERE album.id = ?";
 
 		$stmt = $this->dbManager->prepareQuery ( $sql );
-		$this->dbManager->bindValue ( $stmt, 1, $artistID, $this->dbManager->INT_TYPE );
+		$this->dbManager->bindValue ( $stmt, 1, $albumID, $this->dbManager->INT_TYPE );
 
 		$this->dbManager->executeQuery ( $stmt );
 		$rowCount = $this->dbManager->getNumberOfAffectedRows ( $stmt );
