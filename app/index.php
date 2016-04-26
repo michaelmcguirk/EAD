@@ -70,6 +70,22 @@ $app->map ( "/albums(/:id)", "authenticate", function ($albumID = null) use($app
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
+// Album Search Endpoint
+$app->map ( "/albums/search/:str", "authenticate", function ($albumSearchStr = null) use($app) {
+
+	$httpMethod = $app->request->getMethod ();
+	$action = ACTION_SEARCH_ALBUMS;
+	$parameters ["albumSearchStr"] = $albumSearchStr; // prepare parameters to be passed to the controller (example: ID)
+
+	// artists/search/<search-string>?format=<xml/json>
+	$format = $app->request()->get('format');
+	$view = viewFormat($format);
+
+	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "AlbumModel", "AlbumController", $view, $action, $app, $parameters );
+	return $run -> output();
+} )->via ( "GET");
+
 // User Endpoint
 $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) {
 	
