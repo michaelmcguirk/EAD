@@ -29,7 +29,7 @@ class AlbumController {
 				$this->deleteAlbum ( $id );
 				break;
 			case ACTION_SEARCH_ALBUMS :
-				$string = $parameteres ["SearchingString"];
+				$string = $parameteres ["albumSearchStr"];
 				$this->searchAlbums ( $string );
 				break;
 			case null :
@@ -64,6 +64,23 @@ class AlbumController {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_NOCONTENT );
 			$Message = array (
 					GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE 
+			);
+			$this->model->apiResponse = $Message;
+		}
+	}
+	
+	private function createNewAlbum($newAlbum) {
+		if ($newID = $this->model->createNewAlbum ( $newAlbum )) {
+			$this->slimApp->response ()->setStatus ( HTTPSTATUS_CREATED );
+			$Message = array (
+					GENERAL_MESSAGE_LABEL => GENERAL_RESOURCE_CREATED,
+					"id" => "$newID"
+			);
+			$this->model->apiResponse = $Message;
+		} else {
+			$this->slimApp->response ()->setStatus ( HTTPSTATUS_BADREQUEST );
+			$Message = array (
+					GENERAL_MESSAGE_LABEL => GENERAL_INVALIDBODY
 			);
 			$this->model->apiResponse = $Message;
 		}
