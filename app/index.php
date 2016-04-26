@@ -22,12 +22,26 @@ function authenticate(\Slim\Route $route){
 	return true;
 }
 
+// If format attribute is appended to url and = xml, use xml view. Default view is JSON.
+function viewFormat($format){
+	if (!empty($format) && $format === "xml")
+	{
+		return "xmlView";
+	}
+	else{
+		return "jsonView";
+	}
+}
 
+// User Endpoint
 $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
 	$action = null;
-	$parameters ["id"] = $userID; // prepare parameters to be passed to the controller (example: ID)
+	$parameters ["id"] = $userID;
+	
+	$format = $app->request()->get('format');
+	$view = viewFormat($format);
 	
 	if (($userID == null) or is_numeric ( $userID )) {
 		switch ($httpMethod) {
@@ -50,27 +64,21 @@ $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) 
 		}
 	}
 	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
-	$run = new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "UserModel", "UserController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
-// Artists
+// Artists Endpoint
 $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($app) {
 
 	$httpMethod = $app->request->getMethod ();
 	$action = null;
-	$parameters ["id"] = $artistID; // prepare parameters to be passed to the controller (example: ID)
-	if (!empty($app->request()->get('format')))
-	{
-		$viewParam = $app->request()->get('format');
-		if($viewParam === "xml"){
-			$view = "xmlView";
-		}
-		else{
-			$view = "jsonView";
-		}		
-		echo $view;
-	}
+	$parameters ["id"] = $artistID;
+	
+	// artists/<artist-id>?format=<xml/json>
+	$format = $app->request()->get('format');
+	$view = viewFormat($format);
+	
 
 	if (($artistID == null) or is_numeric ( $artistID )) {
 		switch ($httpMethod) {
@@ -97,14 +105,19 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
-// Artists
+// Artists Search Endpoint
 $app->map ( "/artists/search/:str", "authenticate", function ($str = null) use($app) {
 
 	$httpMethod = $app->request->getMethod ();
 	$action = ACTION_SEARCH_ARTIST;
 	$parameters ["SearchStr"] = $str; // prepare parameters to be passed to the controller (example: ID)
+	
+	// artists/search/<search-string>?format=<xml/json>
+	$format = $app->request()->get('format');
+	$view = viewFormat($format);
+	
 	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
-	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", "jsonView", $action, $app, $parameters );
+	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
 
