@@ -34,6 +34,42 @@ function viewFormat($format){
 	}
 }
 
+// Albums Endpoint
+$app->map ( "/albums(/:id)", "authenticate", function ($albumID = null) use($app) {
+
+	$httpMethod = $app->request->getMethod ();
+	$action = null;
+	$parameters ["id"] = $albumID;
+
+	// albums/<album-id>?format=<xml/json>
+	$format = $app->request()->get('format');
+	$view = viewFormat($format);
+
+
+	if (($albumID == null) or is_numeric ( $albumID )) {
+		switch ($httpMethod) {
+			case "GET" :
+				if ($albumID != null)
+					$action = ACTION_GET_ALBUM;
+					else
+						$action = ACTION_GET_ALBUMS;
+						break;
+			case "POST" :
+				$action = ACTION_CREATE_ALBUM;
+				break;
+			case "PUT" :
+				$action = ACTION_UPDATE_ALBUM;
+				break;
+			case "DELETE" :
+				$action = ACTION_DELETE_ALBUM;
+				break;
+			default :
+		}
+	}
+	$run = new loadRunMVCComponents ( "AlbumModel", "AlbumController", $view, $action, $app, $parameters );
+	return $run -> output();
+} )->via ( "GET", "POST", "PUT", "DELETE" );
+
 // User Endpoint
 $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) {
 	
