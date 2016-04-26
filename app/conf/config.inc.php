@@ -76,4 +76,7 @@ define("TABLE_USER_PASSWORD_LENGTH", 40);
 define("TABLE_ARTIST_NAME_LENGTH", 255);
 define("TABLE_ARTIST_COUNTRY_LENGTH", 255);
 
+/* representation of a new album in the DB */
+define("TABLE_ALBUM_NAME_LENGTH", 255);
+
 ?>
