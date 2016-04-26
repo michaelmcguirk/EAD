@@ -17,6 +17,14 @@ define("ACTION_DELETE_USER", 77);
 define("ACTION_SEARCH_USERS", 88);
 define("ACTION_AUTHENTICATE_USER", 99);
 
+/* actions for the ALBUMS REST resource */
+define("ACTION_GET_ALBUM", 101);
+define("ACTION_GET_ALBUMS", 102);
+define("ACTION_CREATE_ALBUM", 103);
+define("ACTION_UPDATE_ALBUM", 104);
+define("ACTION_DELETE_ALBUM", 105);
+define("ACTION_SEARCH_ALBUMS", 106);
+
 define("ACTION_GET_ARTIST", 32);
 define("ACTION_GET_ARTISTS", 42);
 define("ACTION_CREATE_ARTIST", 52);
