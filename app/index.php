@@ -9,6 +9,7 @@ $app = new \Slim\Slim (); // slim run-time object
 require_once "conf/config.inc.php";
 
 function authenticate(\Slim\Route $route){
+	// username and password headers are extracted and passed to controller.
 	$app = \Slim\Slim::getInstance();
 	$headers = $app->request->headers;
 	$username =  $headers['username'];
