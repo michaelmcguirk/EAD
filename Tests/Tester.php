@@ -10,10 +10,12 @@ require_once ('../SimpleTest/web_tester.php');
  
 class Tester extends WebTestCase {
 	
-
+	private $route;
 	public function setUp() {
 		$this->addHeader("username: carl");
 		$this->addHeader("password: carl");
+		$this->route = "http://localhost/ca/app";
+		//$this->route = "http://localhost/ead/ca/app";
 	}
 	
 	public function tearDown() {
@@ -21,17 +23,42 @@ class Tester extends WebTestCase {
 	}
 	
 	// Tests for GETs (songs, artists, albums, users)
-	function testGets() {
-		$this->get('http://localhost/ead/ca/app/index.php/songs');
+	function testGet() {
+		$this->get($this->route . '/index.php/songs');
 		$this->assertResponse(200);
-		$this->get('http://localhost/ead/ca/app/index.php/artists');
+		
+		$this->get($this->route . '/index.php/artists');
+		$this->assertResponse(200);
+		
+		$this->get($this->route . '/index.php/albums');
+		$this->assertResponse(200);
+		
+		$this->get($this->route . '/index.php/users');
 		$this->assertResponse(200);
 	}
 	
-	function testPosts() {
-		$this->post('http://localhost/ead/ca/app/index.php/albums', 
+	function testPost() {
+		$this->post($this->route . '/index.php/albums', 
 				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
 		$this->assertResponse(201);
+		
+		$this->post($this->route . '/index.php/artists',
+				'{"name":"Jimi Hendrix","country":"US"}');
+		$this->assertResponse(201);
+		
+		$this->post($this->route . '/index.php/users',
+				'{"name":"Testy", "surname":"Testerson","email":"mail@mail.com","password":"password","username":"test"}');
+		$this->assertResponse(201);
+	}
+	
+	function testPut() {	
+		$this->put($this->route . '/index.php/users/1',
+				'{"name":"Testy", "surname":"Testerson","email":"mail@mail.com","password":"password","username":"test"}');
+		$this->assertResponse(200);
+		
+		$this->put($this->route . '/index.php/albums/4',
+				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
+		$this->assertResponse(200);
 	}
 
 }
