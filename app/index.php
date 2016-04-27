@@ -29,6 +29,10 @@ function viewFormat($format){
 	{
 		return "xmlView";
 	}
+	else if (!empty($format) && $format === "csv")
+	{
+		return "csvView";
+	}
 	else{
 		return "jsonView";
 	}
