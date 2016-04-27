@@ -32,6 +32,14 @@ define("ACTION_UPDATE_ARTIST", 62);
 define("ACTION_DELETE_ARTIST", 72);
 define("ACTION_SEARCH_ARTIST", 82);
 
+/* actions for the SONGS REST resource */
+define("ACTION_GET_SONG", 111);
+define("ACTION_GET_SONGS", 112);
+define("ACTION_CREATE_SONG", 113);
+define("ACTION_UPDATE_SONG", 114);
+define("ACTION_DELETE_SONG", 115);
+define("ACTION_SEARCH_SONGS", 116);
+
 
 /* HTTP status codes 2xx*/
 define("HTTPSTATUS_OK", 200);
@@ -86,5 +94,7 @@ define("TABLE_ARTIST_COUNTRY_LENGTH", 255);
 
 /* representation of a new album in the DB */
 define("TABLE_ALBUM_NAME_LENGTH", 255);
+
+define("TABLE_SONG_NAME_LENGTH", 255);
 
 ?>
