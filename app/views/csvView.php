@@ -8,7 +8,7 @@ class csvView {
 		$this->slimApp = $slimApp;
 	}
 	public function output() {
-		// prepare json responseresponse
+		// prepare csv response
 		$resultSet = $this->model->apiResponse;
 		$cols = $resultSet [0];
 		$csv = "";
