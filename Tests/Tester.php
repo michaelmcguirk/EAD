@@ -72,7 +72,11 @@ class Tester extends WebTestCase {
 		$this->put($this->route . '/index.php/albums/4',
 				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
 		$this->assertResponse(200);
-		
+	}
+	
+	function testDelete(){
+		$this->delete($this->route . '/index.php/users/7');
+		$this->assertResponse(200);
 	}
 
 }
