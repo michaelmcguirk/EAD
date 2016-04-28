@@ -1,6 +1,6 @@
 <?php
 
-
+// Add reference to Slim library. We are using v. 2.4.2.
 require_once "../Slim/Slim.php";
 Slim\Slim::registerAutoloader ();
 
@@ -8,6 +8,7 @@ $app = new \Slim\Slim (); // slim run-time object
 
 require_once "conf/config.inc.php";
 
+// Middleware function (http://docs.slimframework.com/routing/middleware/) called for each route
 function authenticate(\Slim\Route $route){
 	// username and password headers are extracted and passed to controller.
 	$app = \Slim\Slim::getInstance();
@@ -85,12 +86,12 @@ $app->map ( "/albums/search/:str", "authenticate", function ($albumSearchStr = n
 	$format = $app->request()->get('format');
 	$view = viewFormat($format);
 
-	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 	$run = new loadRunMVCComponents ( "AlbumModel", "AlbumController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET");
 
-// User Endpoint
+// User endpoint.
+// Multiple HTTP methods use the same route (Custom Routes - http://docs.slimframework.com/routing/custom/)
 $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) {
 	
 	$httpMethod = $app->request->getMethod ();
@@ -120,7 +121,6 @@ $app->map ( "/users(/:id)", "authenticate", function ($userID = null) use($app) 
 			default :
 		}
 	}
-	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 	$run = new loadRunMVCComponents ( "UserModel", "UserController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
@@ -157,7 +157,6 @@ $app->map ( "/artists(/:id)", "authenticate", function ($artistID = null) use($a
 			default :
 		}
 	}
-	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET", "POST", "PUT", "DELETE" );
@@ -173,7 +172,6 @@ $app->map ( "/artists/search/:str", "authenticate", function ($str = null) use($
 	$format = $app->request()->get('format');
 	$view = viewFormat($format);
 	
-	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", $view, $action, $app, $parameters );
 	return $run -> output();
 } )->via ( "GET" );
