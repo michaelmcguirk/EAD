@@ -15,11 +15,94 @@ class Tester extends WebTestCase {
 		$this->addHeader("username: carl");
 		$this->addHeader("password: carl");
 		$this->route = "http://localhost/ca/app";
-		//$this->route = "http://localhost/ead/ca/app";
+		// $this->route = "http://localhost/ead/ca/app";
 	}
 	
-	public function tearDown() {
-		
+	public function tearDown() {}
+	
+	function testAlbum() {
+	
+		// Good test data
+		$goodAlbum1 = 	'{"album_name":"Album 1",	"album_year":"2001",	"artist":"1"}';
+		$goodAlbum2 = 	'{"album_name":"Album 2",	"album_year":"2001",	"artist":"2"}';
+	
+		// bad test data - field names
+		$badAlbum1 = 	'{"album_name_X":"Album 1",	"album_year":"2001",	"artist":"1"}';
+		$badAlbum2 = 	'{"album_name":"Album 1",	"album_year_X":"2001",	"artist":"1"}';
+		$badAlbum3 = 	'{"album_name":"Album 1",	"album_year_X":"2001",	"artist_X":"1"}';
+	
+		// bad test data - field values
+		$badAlbum4 = 	'{"album_name":"",	"album_year":"2001",	"artist":"1"}';
+		$badAlbum5 = 	'{"album_name":"Album 1",	"album_year":"20 X",	"artist":"1"}';
+		$badAlbum6 = 	'{"album_name":"Album 1",	"album_year":"2001",	"artist":"X"}';
+	
+	
+		// POST
+		// invalid new albums
+		$this->post($this->route . '/index.php/albums', $badAlbum1);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->post($this->route . '/index.php/albums', $badAlbum2);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->post($this->route . '/index.php/albums', $badAlbum3);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->post($this->route . '/index.php/albums', $badAlbum4);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->post($this->route . '/index.php/albums', $badAlbum5);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->post($this->route . '/index.php/albums', $badAlbum6);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		// valid new album
+		$raw = $this->post($this->route . '/index.php/albums', $goodAlbum1);
+		$this->assertResponse(201); // HTTPSTATUS_CREATED
+	
+		// Get id from raw response, e.g. '{"message":"Resource has been created","id":"13"}'
+		$resp = json_decode($raw, true);
+		$id = $resp['id'];
+	
+	
+		// GET
+		$this->get($this->route . '/index.php/albums');
+		$this->assertResponse(200); // HTTPSTATUS_OK
+	
+		// PUT
+		// invalid changes
+		$this->put($this->route . '/index.php/albums/' . $id, $badAlbum1);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->put($this->route . '/index.php/albums/' . $id, $badAlbum2);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->put($this->route . '/index.php/albums/' . $id, $badAlbum3);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->put($this->route . '/index.php/albums/' . $id, $badAlbum4);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		$this->put($this->route . '/index.php/albums/' . $id, $badAlbum5);
+		$this->assertResponse(400); // HTTPSTATUS_BADREQUEST
+	
+		// valid change
+		$this->put($this->route . '/index.php/albums/' . $id, $goodAlbum2);
+		$this->assertResponse(200); // HTTPSTATUS_OK
+	
+	
+		// DELETE
+		$this->delete($this->route . '/index.php/albums/' . $id);
+		$this->assertResponse(200); // HTTPSTATUS_OK
+	
+	
+		// Attempt1: using a custom 'ID' header didn't work - headers is a string
+		// 		$hdrs = $this->getBrowser()->getHeaders();
+		// 		print_r('$hdrs: '.$hdrs);
+		// 		$id = $hdrs["id"]; //Illegal string offset 'id'
+		// 		print_r('$id: '.$id);
+	
 	}
 	
 	// Tests for GETs (songs, artists, albums, users)
@@ -63,14 +146,15 @@ class Tester extends WebTestCase {
 				'{"song_name":"A Song","duration":"2.45","artist":"1","album":"1","track_no":"1"}');
 		$this->assertResponse(201);
 	}
-	
-	function testPut() {	
+
+	function testPut() {
+		// n.b. PUTs fail if data is identical
 		$this->put($this->route . '/index.php/users/2',
-				'{"name":"Testy", "surname":"Testrson","email":"mail@mail.com","password":"password","username":"test"}');
+				'{"name":"Testy", "surname":"Testerson","email":"mail0@mail.com","password":"password","username":"test"}');
 		$this->assertResponse(200);
-		
-		$this->put($this->route . '/index.php/albums/4',
-				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
+	
+		$this->put($this->route . '/index.php/users/1',
+				'{"name":"carl","surname":"carl","email":"mail0@mail.com","password":"carl","username":"carl"}');
 		$this->assertResponse(200);
 	}
 	
