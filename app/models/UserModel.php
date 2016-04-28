@@ -79,11 +79,20 @@ class UserModel {
 	public function updateUser($userID, $userNewRepresentation) {
 		if (! empty ( $userID ) && is_numeric ( $userID )) {
 			// compulsory values
-			if (! empty ( $userNewRepresentation ["name"] ) && ! empty ( $userNewRepresentation ["surname"] ) && ! empty ( $userNewRepresentation ["email"] ) && ! empty ( $userNewRepresentation ["password"] )) {
+			if (! empty ( $userNewRepresentation ["name"] ) 
+					&& ! empty ( $userNewRepresentation ["username"] )
+					&& ! empty ( $userNewRepresentation ["surname"] ) 
+					&& ! empty ( $userNewRepresentation ["email"] ) 
+					&& ! empty ( $userNewRepresentation ["password"] )) {
 				/*
-				 * the model knows the representation of a user in the database and this is: name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
+				 * the model knows the representation of a user in the database and this is: 
+				 * name: varchar(25) surname: varchar(25) email: varchar(50) password: varchar(40)
 				 */
-				if (($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["name"], TABLE_USER_NAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["surname"], TABLE_USER_SURNAME_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["email"], TABLE_USER_EMAIL_LENGTH )) && ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
+				if (($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["name"], TABLE_USER_NAME_LENGTH )) 
+						&& ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["username"], TABLE_USER_USERNAME_LENGTH ))
+						&& ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["surname"], TABLE_USER_SURNAME_LENGTH )) 
+						&& ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["email"], TABLE_USER_EMAIL_LENGTH )) 
+						&& ($this->validationSuite->isLengthStringValid ( $userNewRepresentation ["password"], TABLE_USER_PASSWORD_LENGTH ))) {
 					$updatedRows = $this->UsersDAO->update ( $userNewRepresentation, $userID );
 					if ($updatedRows > 0)
 						return (true);
