@@ -172,7 +172,7 @@ $app->map ( "/artists/search/:str", "authenticate", function ($str = null) use($
 	//return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 	$run = new loadRunMVCComponents ( "ArtistModel", "ArtistController", $view, $action, $app, $parameters );
 	return $run -> output();
-} )->via ( "GET", "POST", "PUT", "DELETE" );
+} )->via ( "GET" );
 
 
 // Songs Endpoint
