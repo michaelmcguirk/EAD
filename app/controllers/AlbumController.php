@@ -72,6 +72,7 @@ class AlbumController {
 	private function createNewAlbum($newAlbum) {
 		if ($newID = $this->model->createNewAlbum ( $newAlbum )) {
 			$this->slimApp->response ()->setStatus ( HTTPSTATUS_CREATED );
+			$this->slimApp->response ()->headers->set('ID', "$newID");
 			$Message = array (
 					GENERAL_MESSAGE_LABEL => GENERAL_RESOURCE_CREATED,
 					"id" => "$newID"
