@@ -27,10 +27,19 @@ class Tester extends WebTestCase {
 		$this->get($this->route . '/index.php/songs');
 		$this->assertResponse(200);
 		
+		$this->get($this->route . '/index.php/songs/search/the');
+		$this->assertResponse(200);
+		
 		$this->get($this->route . '/index.php/artists');
 		$this->assertResponse(200);
 		
+		$this->get($this->route . '/index.php/artists/search/the');
+		$this->assertResponse(200);
+		
 		$this->get($this->route . '/index.php/albums');
+		$this->assertResponse(200);
+		
+		$this->get($this->route . '/index.php/albums/search/white');
 		$this->assertResponse(200);
 		
 		$this->get($this->route . '/index.php/users');
@@ -49,16 +58,21 @@ class Tester extends WebTestCase {
 		$this->post($this->route . '/index.php/users',
 				'{"name":"Testy", "surname":"Testerson","email":"mail@mail.com","password":"password","username":"test"}');
 		$this->assertResponse(201);
+		
+		$this->post($this->route . '/index.php/songs',
+				'{"song_name":"A Song","duration":"2.45","artist":"1","album":"1","track_no":"1"}');
+		$this->assertResponse(201);
 	}
 	
 	function testPut() {	
-		$this->put($this->route . '/index.php/users/1',
-				'{"name":"Testy", "surname":"Testerson","email":"mail@mail.com","password":"password","username":"test"}');
+		$this->put($this->route . '/index.php/users/2',
+				'{"name":"Testy", "surname":"Testrson","email":"mail@mail.com","password":"password","username":"test"}');
 		$this->assertResponse(200);
 		
 		$this->put($this->route . '/index.php/albums/4',
 				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
 		$this->assertResponse(200);
+		
 	}
 
 }
