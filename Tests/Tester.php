@@ -10,7 +10,7 @@ require_once ('../SimpleTest/web_tester.php');
  
 class Tester extends WebTestCase {
 	
-	private $route;
+	private $route, $testUserID, $testArtistID, $testSongID, $testAlbumID;
 	public function setUp() {
 		$this->addHeader("username: carl");
 		$this->addHeader("password: carl");
@@ -105,6 +105,36 @@ class Tester extends WebTestCase {
 	
 	}
 	
+	function testPost() {
+		$raw = $this->post($this->route . '/index.php/albums',
+				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
+		$this->assertResponse(201);
+		
+		$resp = json_decode($raw, true);
+		$this->testAlbumID = $resp['id'];
+	
+		$raw = $this->post($this->route . '/index.php/artists',
+				'{"name":"Jimi Hendrix","country":"US"}');
+		$this->assertResponse(201);
+		
+		$resp = json_decode($raw, true);
+		$this->testArtistID = $resp['id'];
+	
+		$raw = $this->post($this->route . '/index.php/users',
+				'{"name":"Testy", "surname":"Test","email":"mail@mail.com","password":"password","username":"test"}');
+		$this->assertResponse(201);
+		
+		$resp = json_decode($raw, true);
+		$this->testUserID = $resp['id'];
+	
+		$raw = $this->post($this->route . '/index.php/songs',
+				'{"song_name":"A Song","duration":"2.45","artist":"1","album":"1","track_no":"1"}');
+		$this->assertResponse(201);
+		
+		$resp = json_decode($raw, true);
+		$this->testSongID = $resp['id'];
+	}
+	
 	// Tests for GETs (songs, artists, albums, users)
 	function testGet() {
 		$this->get($this->route . '/index.php/songs');
@@ -129,37 +159,40 @@ class Tester extends WebTestCase {
 		$this->assertResponse(200);
 	}
 	
-	function testPost() {
-		$this->post($this->route . '/index.php/albums', 
-				'{"album_name":"Mickey","album_year":"1965","artist":"1"}');
-		$this->assertResponse(201);
-		
-		$this->post($this->route . '/index.php/artists',
-				'{"name":"Jimi Hendrix","country":"US"}');
-		$this->assertResponse(201);
-		
-		$this->post($this->route . '/index.php/users',
-				'{"name":"Testy", "surname":"Testerson","email":"mail@mail.com","password":"password","username":"test"}');
-		$this->assertResponse(201);
-		
-		$this->post($this->route . '/index.php/songs',
-				'{"song_name":"A Song","duration":"2.45","artist":"1","album":"1","track_no":"1"}');
-		$this->assertResponse(201);
-	}
+
 
 	function testPut() {
 		// n.b. PUTs fail if data is identical
-		$this->put($this->route . '/index.php/users/2',
+		$this->put($this->route . '/index.php/albums/'.$this->testAlbumID,
+				'{"album_name":"Mickey","album_year":"1966","artist":"1"}');
+		$this->assertResponse(200);
+		
+		$this->put($this->route . '/index.php/users/' . $this->testUserID,
 				'{"name":"Testy", "surname":"Testerson","email":"mail0@mail.com","password":"password","username":"test"}');
 		$this->assertResponse(200);
-	
-		$this->put($this->route . '/index.php/users/1',
-				'{"name":"carl","surname":"carl","email":"mail0@mail.com","password":"carl","username":"carl"}');
+		
+		$this->put($this->route . '/index.php/songs/' . $this->testSongID,
+				'{"song_name":"A Song","duration":"2.50","artist":"1","album":"1","track_no":"1"}');
 		$this->assertResponse(200);
+		
+		/* $this->put($this->route . '/index.php/artists/' . $this->testArtistID,
+				'{"name":"Jimi Hendrix","country":"USA"}');
+		$this->assertResponse(200); */
+	
 	}
 	
 	function testDelete(){
-		$this->delete($this->route . '/index.php/users/7');
+		
+		$this->delete($this->route . '/index.php/users/' . $this->testUserID);
+		$this->assertResponse(200);
+		
+		$this->delete($this->route . '/index.php/artists/' . $this->testArtistID);
+		$this->assertResponse(200);
+		
+		$this->delete($this->route . '/index.php/albums/' . $this->testAlbumID);
+		$this->assertResponse(200);
+		
+		$this->delete($this->route . '/index.php/songs/' . $this->testSongID);
 		$this->assertResponse(200);
 	}
 
